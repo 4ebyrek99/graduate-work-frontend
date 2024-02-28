@@ -41,6 +41,7 @@ const userInfo = computed(() => userStore.userInfo)
 <style scoped>
     .wrapper {
         @apply
+        fixed
         flex
         items-center
         justify-between
