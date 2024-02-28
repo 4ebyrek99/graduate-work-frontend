@@ -1,12 +1,6 @@
 <script setup>
 
 import {definePageMeta} from "#imports"
-import {useAuthStore} from "~/store/auth.js"
-import {reactive} from "vue"
-import cookies from "js-cookie"
-import {navigateTo} from "#app"
-import {mdiAccountOutline} from "@mdi/js"
-
 
 definePageMeta({
     layout: "auth"
