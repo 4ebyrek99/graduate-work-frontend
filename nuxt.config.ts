@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     primevue: {
         cssLayerOrder: "tailwind-base, primevue, tailwind-utilities",
     },
-    css: ["primevue/resources/themes/aura-light-green/theme.css"],
+    css: ["@/assets/css/index.css", "primevue/resources/themes/aura-light-green/theme.css"],
     imports: {
         autoImport: false
     },
