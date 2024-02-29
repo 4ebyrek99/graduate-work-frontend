@@ -1,16 +1,12 @@
 <script setup>
 
+import AppCalendar from "~/components/AppCalendar.vue"
 </script>
 
 <template>
-    <div class="wrapper">
-        <Calendar />
-    </div>
+    <AppCalendar />
 </template>
 
 <style scoped>
-    .wrapper {
-        @apply
-        mx-8;
-    }
+
 </style>

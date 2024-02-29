@@ -70,15 +70,7 @@ await scheduleStore.genSchedule("A1")
 
 <style scoped>
 .calendar {
-    @apply
-    mt-[72px]
-    flex
-    flex-col
-    bg-white
-    rounded-2xl
-    shadow-lg
-    min-h-[calc(100vh-96px)]
-    mb-8;
+
 
     .days {
         @apply

@@ -23,5 +23,12 @@ defineProps({
 </template>
 
 <style scoped>
-
+    svg {
+        @apply
+        w-6
+        h-6
+        rounded-full
+        hover:bg-gray-200;
+        fill: currentColor;
+    }
 </style>
