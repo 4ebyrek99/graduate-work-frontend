@@ -4,7 +4,8 @@ import {mdiAccount, mdiLock} from "@mdi/js"
 import {useAuthStore} from "~/store/auth.js"
 import {reactive} from "vue"
 import cookies from "js-cookie"
-import {navigateTo} from "#app"
+
+const emit = defineEmits(["updateUserInfo"])
 
 const authStore = useAuthStore()
 
@@ -17,14 +18,14 @@ async function login() {
     await authStore.login(user)
     if (authStore.authResult.success) {
         cookies.set("token", authStore.authResult.token)
-        navigateTo("/")
+        emit("updateUserInfo")
     }
 }
 
 </script>
 
 <template>
-    <div class="wrapper">
+    <div class="auth-wrapper">
         <form @submit.prevent="login">
             <InputGroup>
                 <InputGroupAddon>
@@ -56,13 +57,10 @@ async function login() {
 </template>
 
 <style scoped>
-    .wrapper {
+    .auth-wrapper {
         @apply
         bg-white
         w-[400px]
-        h-full
-        p-4
-        shadow-lg
         rounded-2xl;
 
         form {

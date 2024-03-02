@@ -21,7 +21,6 @@ export const useAuthStore = defineStore("auth", () => {
 
     function quit() {
         cookies.remove("token")
-        navigateTo("/auth")
     }
 
     return {

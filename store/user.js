@@ -15,6 +15,8 @@ export const useUserStore = defineStore("user", () => {
                 authorization: cookies.get("token")
             }
         })
+
+        return userInfo.value
     }
     return {
         userInfo,

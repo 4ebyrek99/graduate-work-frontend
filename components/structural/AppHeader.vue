@@ -1,37 +1,66 @@
 <script setup>
-import {computed, onMounted} from "vue"
+import {ref} from "vue"
 
 import {useAuthStore} from "~/store/auth.js"
 import {useUserStore} from "~/store/user.js"
+import OverlayPanel from "primevue/overlaypanel"
+
 const authStore = useAuthStore()
 const userStore = useUserStore()
+const ov = ref()
 
-onMounted(() => {
-    userStore.getUserInfo()
-})
+const userInfo = ref(await userStore.getUserInfo())
 
-const userInfo = computed(() => userStore.userInfo)
+const openAuth = (event) => {
+    ov.value.toggle(event)
+}
+
+function quit() {
+    userInfo.value = {
+        success: false
+    }
+    authStore.quit()
+}
+
+async function updateUserInfo() {
+    userInfo.value = await userStore.getUserInfo()
+}
+
 </script>
 
 <template>
     <div class="wrapper">
         <div class="lessons">
-
         </div>
         <div class="user-info">
-            <Button
-                v-if="userInfo === null"
-                label="Войти"
-            />
             <div
-                v-else
                 class="flex items-center"
+                v-if="!userInfo?.success"
+            >
+                <Button
+                    label="Войти"
+                    type="button"
+                    @click="openAuth"
+                />
+                <OverlayPanel
+                    ref="ov"
+                >
+                    <div class="w-full">
+
+                        <AuthForm @update-user-info="updateUserInfo" />
+                    </div>
+                </OverlayPanel>
+            </div>
+
+            <div
+                class="flex items-center"
+                v-else
             >
                 <span>{{userInfo.firstName}} {{userInfo.lastName}}</span>
                 <Button
                     class="ml-4"
                     label="Выйти"
-                    @click="authStore.quit"
+                    @click="quit"
                 />
             </div>
         </div>
