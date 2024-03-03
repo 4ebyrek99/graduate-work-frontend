@@ -30,7 +30,13 @@ async function updateUserInfo() {
 
 <template>
     <div class="wrapper">
-        <div class="lessons">
+        <div class="actions">
+            <NuxtLink
+                v-if="userInfo.success"
+                to="/control-panel"
+            >
+                <Button label="Панель управления" />
+            </NuxtLink>
         </div>
         <div class="user-info">
             <div
@@ -78,7 +84,8 @@ async function updateUserInfo() {
         bg-white
         shadow-lg
         w-full
-        mb-4;
+        mb-4
+        z-50;
 
         .user-info {
             @apply

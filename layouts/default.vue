@@ -20,7 +20,6 @@ import AppHeader from "~/components/structural/AppHeader.vue"
         flex
         flex-col
         bg-white
-        rounded-lg
         shadow-lg
         min-h-[calc(100vh-104px)];
     }

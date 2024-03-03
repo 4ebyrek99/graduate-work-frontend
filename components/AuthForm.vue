@@ -29,7 +29,7 @@ async function login() {
         <form @submit.prevent="login">
             <InputGroup>
                 <InputGroupAddon>
-                    <Icon :icon="mdiAccount" />
+                    <span class="pi pi-user" />
                 </InputGroupAddon>
                 <InputText
                     v-model="user.username"
@@ -39,7 +39,7 @@ async function login() {
             </InputGroup>
             <InputGroup>
                 <InputGroupAddon>
-                    <Icon :icon="mdiLock" />
+                    <span class="pi pi-lock" />
                 </InputGroupAddon>
                 <InputText
                     v-model="user.password"

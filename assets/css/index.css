@@ -1,8 +1,15 @@
 * {
     /*font-family: Inter, Roboto, sans-serif;*/
     scroll-behavior: smooth;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 html {
     font-size: 16px;
+}
+
+.p-inputtext {
+    @apply
+    p-1;
 }
