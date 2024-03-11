@@ -1,9 +1,11 @@
-<script setup lang="ts">
+<script setup>
 
-import {mdiAccount, mdiLock} from "@mdi/js"
 import {useAuthStore} from "~/store/auth.js"
 import {reactive} from "vue"
 import cookies from "js-cookie"
+
+import InputGroup from "primevue/inputgroup"
+import InputGroupAddon from "primevue/inputgroupaddon"
 
 const emit = defineEmits(["updateUserInfo"])
 

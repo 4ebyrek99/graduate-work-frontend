@@ -2,17 +2,26 @@
 
 import {useScheduleStore} from "~/store/schedule.js"
 import {useLessonsStore} from "~/store/lessons.js"
-import {computed} from "vue"
+import {useTeachersStore} from "~/store/teachers.js"
+import {useUserStore} from "~/store/user.js"
+import {computed, onMounted} from "vue"
 
 import DayCard from "~/components/controlPanel/DayCard.vue"
+
 const scheduleStore = useScheduleStore()
 const lessonsStore = useLessonsStore()
+const teachersStore = useTeachersStore()
+const userStore = useUserStore()
 
-await scheduleStore.getSchedule("A1")
-await lessonsStore.getLessons("A1")
+onMounted(async () => {
+    await lessonsStore.getLessons(userStore.userInfo.groupName)
+    await scheduleStore.getSchedule(userStore.userInfo.groupName)
+    await teachersStore.getTeachers()
+})
 
 const week = computed(() => scheduleStore.schedule)
 const lessons = computed(() => lessonsStore.lessons)
+const teachers = computed(() => teachersStore.teachers)
 
 </script>
 
@@ -26,7 +35,8 @@ const lessons = computed(() => lessonsStore.lessons)
                 :key="day._id"
                 :id="day.id"
                 :day="day"
-                :lessons="lessons"
+                :lessons="lessons.lessons"
+                :teachers="teachers"
             />
         </div>
     </div>

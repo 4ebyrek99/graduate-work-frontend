@@ -9,7 +9,8 @@ html {
     font-size: 16px;
 }
 
-.p-inputtext {
+.p-dropdown-label {
     @apply
-    p-1;
+    flex
+    items-center;
 }

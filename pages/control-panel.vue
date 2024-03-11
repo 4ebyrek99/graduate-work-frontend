@@ -11,6 +11,7 @@ import ScheduleList from "~/components/controlPanel/ScheduleList.vue"
         </TabPanel>
         <TabPanel header="Список учащихся" />
         <TabPanel header="Список преподавателей" />
+        <TabPanel header="Список предметов" />
     </TabView>
 </template>
 

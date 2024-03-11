@@ -34,7 +34,7 @@ const model = reactive({
 
 const selectedLessons = defineModel()
 
-selectedLessons.value = reactive({
+selectedLessons.value = {
     lessonName: "Не указан",
     timeStart: "00:00",
     timeEnd: "00:00",
@@ -44,7 +44,7 @@ selectedLessons.value = reactive({
         name:  "Не указан",
         phoneNumber: "Не указан"
     }
-})
+}
 
 watch(model, () => {
     scheduleStore.saveDay(model)
@@ -58,12 +58,6 @@ const dragOptions = computed(() => {
         ghostClass: "ghost"
     }
 })
-
-function addLesson(lesson) {
-    model.lessons.push({
-        lesson: {...lesson}
-    })
-}
 
 </script>
 
@@ -114,7 +108,6 @@ function addLesson(lesson) {
                             <div class="lesson-teacher">
                                 <Dropdown
                                     v-model="selectedLessons.lessonName"
-                                    placeholder="Предмет"
                                     :options="lessons"
                                 />
                                 <Dropdown
@@ -148,7 +141,7 @@ function addLesson(lesson) {
                             <Button
                                 class="w-full"
                                 label="Добавить"
-                                @click="addLesson(selectedLessons)"
+                                @click="model.lessons.push(selectedLessons)"
                             />
                             {{selectedLessons}}
                         </div>
