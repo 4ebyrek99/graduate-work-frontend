@@ -60,9 +60,7 @@ const dragOptions = computed(() => {
 })
 
 function addLesson(lesson) {
-    model.lessons.push({
-        lesson: {...lesson}
-    })
+    model.lessons.push({...lesson})
 }
 
 </script>
@@ -150,7 +148,6 @@ function addLesson(lesson) {
                                 label="Добавить"
                                 @click="addLesson(selectedLessons)"
                             />
-                            {{selectedLessons}}
                         </div>
                     </div>
                 </OverlayPanel>
