@@ -14,3 +14,10 @@ html {
     flex
     items-center;
 }
+
+.ghost {
+    @apply
+    opacity-50
+    text-white
+    bg-main-green;
+}

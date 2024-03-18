@@ -1,6 +1,7 @@
 <script setup>
 
 import ScheduleList from "~/components/controlPanel/ScheduleList.vue"
+import LessonsList from "~/components/controlPanel/LessonsList.vue"
 
 </script>
 
@@ -11,7 +12,9 @@ import ScheduleList from "~/components/controlPanel/ScheduleList.vue"
         </TabPanel>
         <TabPanel header="Список учащихся" />
         <TabPanel header="Список преподавателей" />
-        <TabPanel header="Список предметов" />
+        <TabPanel header="Список предметов">
+            <LessonsList />
+        </TabPanel>
     </TabView>
 </template>
 

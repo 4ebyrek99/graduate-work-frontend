@@ -1,54 +1,12 @@
 <script setup>
 
-import {computed, reactive, ref, watch} from "vue"
 import draggable from "vuedraggable"
-import {useScheduleStore} from "~/store/schedule.js"
+import {useLessonsStore} from "~/store/lessons.js"
+import {useUserStore} from "~/store/user.js"
+import {computed, onMounted, reactive} from "vue"
 
-import Dropdown from "primevue/dropdown"
-import OverlayPanel from "primevue/overlaypanel"
-
-const props = defineProps({
-    day: {
-        type: Object,
-        required: true
-    },
-    lessons: {
-        type: Array,
-        required: true
-    },
-    teachers: {
-        type: Array,
-        required: true
-    }
-})
-
-const addOverlay = ref()
-const openPanel = (event) => {
-    addOverlay.value.toggle(event)
-}
-const scheduleStore = useScheduleStore()
-
-const model = reactive({
-    ...props.day
-})
-
-const selectedLessons = defineModel()
-
-selectedLessons.value = {
-    lessonName: "Не указан",
-    timeStart: "00:00",
-    timeEnd: "00:00",
-    zoomId: "-",
-    zoomPassword: "-",
-    teacher:  {
-        name:  "Не указан",
-        phoneNumber: "Не указан"
-    }
-}
-
-watch(model, () => {
-    scheduleStore.saveDay(model)
-})
+const lessonsStore = useLessonsStore()
+const userStore = useUserStore()
 
 const dragOptions = computed(() => {
     return {
@@ -59,187 +17,83 @@ const dragOptions = computed(() => {
     }
 })
 
+const lessonsList = defineModel()
+
+
+
+onMounted(async () => {
+    await lessonsStore.getLessons(userStore.userInfo.groupName)
+    lessonsList.value = reactive(lessonsStore.lessons)
+})
+
 </script>
 
 <template>
-    <div class="day-card">
-        <Card>
-            <template #title>
-                {{ model.dayName }}
-            </template>
-            <template #content>
-                <draggable
-                    class="lessons-list"
-                    tag="transition-group"
-                    :component-data="{
-                        tag: 'ul',
-                        type: 'transition-group'
-                    }"
-                    v-model="model.lessons"
-                    v-bind="dragOptions"
-                    @start="drag = true"
-                    @end="drag = false"
-                    item-key="order"
+    <div class="lessons-list">
+        {{ lessonsList }}
+        <div class="active-lessons">
+            <draggable
+                class="active-lessons-list"
+                tag="transition-group"
+                :component-data="{
+                    tag: 'ul',
+                    type: 'transition-group'
+                }"
+                v-bind="dragOptions"
+                @start="drag = true"
+                @end="drag = false"
+                item-key="order"
+            >
+                <template
+                    #item="{ element, index }"
                 >
-                    <template
-                        #item="{ element, index }"
+                    <li
+                        :id="index"
+                        class="active-lessons-list-item"
                     >
-                        <li
-                            :id="index"
-                            class="lessons-list-item"
-                        >
-                            <div class="flex items-center gap-1">
-                                <span
-                                    class="icon pi pi-minus"
-                                    @click="model.lessons.splice(index, 1)"
-                                />
-                                <span>{{ element.lessonName }}</span>
-                            </div>
-
-                        </li>
-                    </template>
-                </draggable>
-                <OverlayPanel
-                    ref="addOverlay"
-                    class="w-fit"
+                        {{ element }}
+                    </li>
+                </template>
+            </draggable>
+        </div>
+        <div class="not-active-lessons">
+            <draggable
+                class="not-active-lessons-list"
+                tag="transition-group"
+                :component-data="{
+                    tag: 'ul',
+                    type: 'transition-group'
+                }"
+                123
+                v-bind="dragOptions"
+                @start="drag = true"
+                @end="drag = false"
+                item-key="order"
+            >
+                <template
+                    #item="{ element, index }"
                 >
-                    <div class="w-[400px]">
-                        <div class="inputs">
-                            <div class="lesson-teacher">
-                                <Dropdown
-                                    v-model="selectedLessons.lessonName"
-                                    :options="lessons"
-                                />
-                                <Dropdown
-                                    v-model="selectedLessons.teacher"
-                                    :options="teachers"
-                                    placeholder="Преподаватель"
-                                    option-label="name"
-                                />
-                            </div>
-                            <div class="time-classroom">
-                                <div class="time">
-                                    <InputMask
-                                        class="date-input"
-                                        v-model="selectedLessons.timeStart"
-                                        mask="99:99"
-                                        placeholder="00:00"
-                                    />
-                                    -
-                                    <InputMask
-                                        class="date-input"
-                                        v-model="selectedLessons.timeEnd"
-                                        mask="99:99"
-                                        placeholder="00:00"
-                                    />
-                                </div>
-                                <InputText
-                                    placeholder="Кабинет"
-                                    maxlength="6"
-                                />
-                            </div>
-                            <Button
-                                class="w-full"
-                                label="Добавить"
-                                @click="model.lessons.push(selectedLessons)"
-                            />
-                            {{selectedLessons}}
-                        </div>
-                    </div>
-                </OverlayPanel>
-                <Button
-                    icon="pi pi-plus"
-                    rounded
-                    @click="openPanel"
-                />
-
-            </template>
-        </Card>
+                    <li
+                        :id="index"
+                        class="active-lessons-list-item"
+                    >
+                        {{ element }}
+                    </li>
+                </template>
+            </draggable>
+        </div>
     </div>
 </template>
 
 <style scoped>
-
-:deep(.date-input) {
-    @apply w-[74px] font-bold text-center;
-}
-
-:deep(.p-dropdown) {
-    @apply w-full;
-}
-
-:deep(.p-inputtext) {
-    @apply w-full;
-}
-
-.ghost {
-    @apply
-    opacity-50
-    text-white
-    bg-main-green;
-}
-
-.icon {
-    @apply
-    m-1
-    p-1
-    hover:text-white
-    hover:bg-main-green
-    rounded;
-}
-
-
-.day-card {
-    @apply
-    min-w-[calc(33.33%-10px)];
-
-
     .lessons-list {
         @apply
-        min-h-[170px];
+        flex
+        gap-4
+        h-full;
 
-        .lessons-list-item {
-            @apply
-            flex
-            justify-between
-            rounded-lg
-            cursor-pointer
-            my-2
-            px-2;
+        .active-lessons-list {
 
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgba(18, 18, 23, 0.05);
         }
     }
-}
-
-.inputs {
-    @apply
-    flex
-    flex-col
-    gap-y-2;
-
-    .lesson-teacher {
-        @apply
-        flex
-        justify-between
-        gap-2;
-    }
-
-    .time-classroom {
-        @apply
-        flex
-        gap-2;
-
-        .time {
-            @apply
-            flex
-            items-center
-            gap-2
-            max-w-[172px];
-        }
-    }
-}
-
 </style>

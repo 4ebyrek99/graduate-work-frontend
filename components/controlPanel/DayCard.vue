@@ -28,7 +28,7 @@ const openPanel = (event) => {
 }
 const scheduleStore = useScheduleStore()
 
-const model = reactive({
+const day = reactive({
     ...props.day
 })
 
@@ -46,8 +46,8 @@ selectedLessons.value = reactive({
     }
 })
 
-watch(model, () => {
-    scheduleStore.saveDay(model)
+watch(day, () => {
+    scheduleStore.saveDay(day)
 })
 
 const dragOptions = computed(() => {
@@ -69,7 +69,7 @@ function addLesson(lesson) {
     <div class="day-card">
         <Card>
             <template #title>
-                {{ model.dayName }}
+                {{ day.dayName }}
             </template>
             <template #content>
                 <draggable
@@ -79,7 +79,7 @@ function addLesson(lesson) {
                         tag: 'ul',
                         type: 'transition-group'
                     }"
-                    v-model="model.lessons"
+                    v-model="day.lessons"
                     v-bind="dragOptions"
                     @start="drag = true"
                     @end="drag = false"
@@ -95,7 +95,7 @@ function addLesson(lesson) {
                             <div class="flex items-center gap-1">
                                 <span
                                     class="icon pi pi-minus"
-                                    @click="model.lessons.splice(index, 1)"
+                                    @click="day.lessons.splice(index, 1)"
                                 />
                                 <span>{{ element.lessonName }}</span>
                             </div>
@@ -174,13 +174,6 @@ function addLesson(lesson) {
 
 :deep(.p-inputtext) {
     @apply w-full;
-}
-
-.ghost {
-    @apply
-    opacity-50
-    text-white
-    bg-main-green;
 }
 
 .icon {
