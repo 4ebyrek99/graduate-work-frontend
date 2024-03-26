@@ -6,6 +6,8 @@ import cookies from "js-cookie"
 
 import InputGroup from "primevue/inputgroup"
 import InputGroupAddon from "primevue/inputgroupaddon"
+import { useToast } from "primevue/usetoast"
+const authToast = useToast()
 
 const emit = defineEmits(["updateUserInfo"])
 
@@ -21,6 +23,13 @@ async function login() {
     if (authStore.authResult.success) {
         cookies.set("token", authStore.authResult.token)
         emit("updateUserInfo")
+    } else {
+        authToast.add({
+            severity: "error",
+            summary: "Ошибка авторизация",
+            detail: authStore.authResult.msg,
+            life: 3000
+        })
     }
 }
 
@@ -28,6 +37,7 @@ async function login() {
 
 <template>
     <div class="auth-wrapper">
+        <Toast />
         <form @submit.prevent="login">
             <InputGroup>
                 <InputGroupAddon>

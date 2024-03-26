@@ -52,7 +52,6 @@ async function updateUserInfo() {
                     ref="ov"
                 >
                     <div class="w-full">
-
                         <AuthForm @update-user-info="updateUserInfo" />
                     </div>
                 </OverlayPanel>
