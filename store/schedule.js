@@ -27,11 +27,12 @@ export const useScheduleStore = defineStore("schedule", () => {
         })
     }
 
-    async function saveDay(day) {
+    async function saveDay(day, groupName) {
         await $fetch(`${config.public.apiHost}/schedule/edit-day`, {
             method: "PUT",
             body: {
-                day
+                day,
+                groupName
             },
             headers: {
                 authorization: cookies.get("token")

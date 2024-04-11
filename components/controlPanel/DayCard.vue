@@ -19,6 +19,10 @@ const props = defineProps({
     teachers: {
         type: Array,
         required: true
+    },
+    groupName: {
+        type: String,
+        required: true
     }
 })
 
@@ -47,7 +51,7 @@ selectedLessons.value = reactive({
 })
 
 watch(day, () => {
-    scheduleStore.saveDay(day)
+    scheduleStore.saveDay(day, props.groupName)
 })
 
 const dragOptions = computed(() => {
@@ -60,7 +64,7 @@ const dragOptions = computed(() => {
 })
 
 function addLesson(lesson) {
-    model.lessons.push({...lesson})
+    day.lessons.push({...lesson})
 }
 
 </script>

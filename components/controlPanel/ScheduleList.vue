@@ -35,7 +35,8 @@ const teachers = computed(() => teachersStore.teachers)
                 :key="day._id"
                 :id="day.id"
                 :day="day"
-                :lessons="lessons.lessons"
+                :group-name="userStore.userInfo.groupName"
+                :lessons="lessons.activeLessons"
                 :teachers="teachers"
             />
         </div>
