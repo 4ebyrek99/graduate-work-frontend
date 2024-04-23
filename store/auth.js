@@ -20,6 +20,7 @@ export const useAuthStore = defineStore("auth", () => {
     }
 
     function quit() {
+        authResult.value = null
         cookies.remove("token")
     }
 
