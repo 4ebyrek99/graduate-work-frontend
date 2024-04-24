@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from "vue"
+import {computed, ref} from "vue"
 
 import {useAuthStore} from "~/store/auth.js"
 import {useUserStore} from "~/store/user.js"
@@ -9,21 +9,16 @@ const authStore = useAuthStore()
 const userStore = useUserStore()
 const ov = ref()
 
-const userInfo = ref(await userStore.getUserInfo())
+userStore.updateSession()
+
+const userInfo = computed(() => userStore.userInfo)
 
 const openAuth = (event) => {
     ov.value.toggle(event)
 }
 
 function quit() {
-    userInfo.value = {
-        success: false
-    }
     authStore.quit()
-}
-
-async function updateUserInfo() {
-    userInfo.value = await userStore.getUserInfo()
 }
 
 </script>
@@ -32,7 +27,7 @@ async function updateUserInfo() {
     <div class="wrapper">
         <div class="actions">
             <NuxtLink
-                v-if="userInfo.success"
+                v-if="userInfo?.success"
                 to="/control-panel"
             >
                 <Button label="Панель управления" />

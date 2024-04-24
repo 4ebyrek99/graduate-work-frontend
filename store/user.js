@@ -16,11 +16,17 @@ export const useUserStore = defineStore("user", () => {
             }
         })
 
-        return userInfo.value
+        localStorage.setItem("user", JSON.stringify(userInfo.value))
     }
+
+    async function updateSession () {
+        await getUserInfo()
+    }
+
     return {
         userInfo,
-        getUserInfo
+        getUserInfo,
+        updateSession
     }
 
 })

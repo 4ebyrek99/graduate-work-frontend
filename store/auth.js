@@ -2,10 +2,11 @@ import {ref} from "vue"
 import {defineStore} from "pinia"
 import {useRuntimeConfig} from "#imports"
 import cookies from "js-cookie"
-import {navigateTo} from "#app"
+import {useUserStore} from "~/store/user.js"
 
 export const useAuthStore = defineStore("auth", () => {
     const config = useRuntimeConfig()
+    const userStore = useUserStore()
 
     const authResult = ref(null)
 
@@ -17,11 +18,14 @@ export const useAuthStore = defineStore("auth", () => {
                 password: user.password
             }
         })
+
+        await userStore.getUserInfo()
     }
 
     function quit() {
         authResult.value = null
         cookies.remove("token")
+        userStore.updateSession()
     }
 
     return {
