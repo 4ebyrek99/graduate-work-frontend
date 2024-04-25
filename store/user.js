@@ -15,8 +15,6 @@ export const useUserStore = defineStore("user", () => {
                 authorization: cookies.get("token")
             }
         })
-
-        localStorage.setItem("user", JSON.stringify(userInfo.value))
     }
 
     async function updateSession () {

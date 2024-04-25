@@ -1,42 +1,42 @@
 <script setup>
 
-import {useScheduleStore} from "~/store/schedule.js"
-import {useLessonsStore} from "~/store/lessons.js"
-import {useTeachersStore} from "~/store/teachers.js"
-import {useUserStore} from "~/store/user.js"
-import {computed, onMounted} from "vue"
-
 import DayCard from "~/components/controlPanel/DayCard.vue"
 
-const scheduleStore = useScheduleStore()
-const lessonsStore = useLessonsStore()
-const teachersStore = useTeachersStore()
-const userStore = useUserStore()
-
-onMounted(async () => {
-    await lessonsStore.getLessons(userStore.userInfo.groupName)
-    await scheduleStore.getSchedule(userStore.userInfo.groupName)
-    await teachersStore.getTeachers()
-})
-
-const week = computed(() => scheduleStore.schedule)
-const lessons = computed(() => lessonsStore.lessons)
-const teachers = computed(() => teachersStore.teachers)
+const props = defineProps(({
+    schedule: {
+        type: Object,
+        required: true
+    },
+    lessons: {
+        type: Object,
+        required: true
+    },
+    teachers: {
+        type: Array,
+        required: true
+    },
+    userGroup: {
+        type: String,
+        required: true
+    }
+}))
 
 </script>
 
 <template>
     <div class="week">
+        <div v-if="props.lessons.isLoading">Грузимся</div>
         <div
+            v-else
             class="days"
         >
             <DayCard
-                v-for="day in week?.schedule"
+                v-for="day in props.schedule.schedule.schedule"
                 :key="day._id"
                 :id="day.id"
                 :day="day"
-                :group-name="userStore.userInfo.groupName"
-                :lessons="lessons.activeLessons"
+                :group-name="props.userGroup"
+                :lessons="lessons.lessons.activeLessons"
                 :teachers="teachers"
             />
         </div>

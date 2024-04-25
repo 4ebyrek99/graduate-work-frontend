@@ -1,4 +1,4 @@
-import {ref} from "vue"
+import {reactive, ref} from "vue"
 import {defineStore} from "pinia"
 import {useRuntimeConfig} from "#imports"
 import cookies from "js-cookie"
@@ -7,7 +7,10 @@ export const useScheduleStore = defineStore("schedule", () => {
     const config = useRuntimeConfig()
 
     const calendar= ref(null)
-    const schedule= ref(null)
+    const schedule= reactive({
+        isLoading: true,
+        schedule: []
+    })
 
     async function genSchedule(groupName) {
         calendar.value = await $fetch(`${config.public.apiHost}/schedule/gen-schedule`, {
@@ -19,12 +22,14 @@ export const useScheduleStore = defineStore("schedule", () => {
     }
 
     async function getSchedule(groupName) {
-        schedule.value = await $fetch(`${config.public.apiHost}/schedule/get-schedule`, {
+        schedule.schedule = await $fetch(`${config.public.apiHost}/schedule/get-schedule`, {
             method: "POST",
             body: {
                 groupName
             }
         })
+
+        schedule.isLoading = false
     }
 
     async function saveDay(day, groupName) {

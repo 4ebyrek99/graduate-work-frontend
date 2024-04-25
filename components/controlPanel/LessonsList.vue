@@ -2,13 +2,11 @@
 
 import draggable from "vuedraggable"
 import {useLessonsStore} from "~/store/lessons.js"
-import {useUserStore} from "~/store/user.js"
-import {computed, onMounted, reactive, ref} from "vue"
+import {computed} from "vue"
 
 import Card from "primevue/card"
 
 const lessonsStore = useLessonsStore()
-const userStore = useUserStore()
 
 const dragOptions = computed(() => {
     return {
@@ -19,19 +17,14 @@ const dragOptions = computed(() => {
     }
 })
 
-const lessonsList = ref([])
-
-onMounted(async () => {
-    await lessonsStore.getLessons(userStore.userInfo.groupName)
-    lessonsList.value = reactive(lessonsStore.lessons)
-})
+const lessons = computed(() => lessonsStore.lessons)
 
 </script>
 
 <template>
     <div class="lessons-list">
         <Card
-            v-if="lessonsList.activeLessons"
+            v-if="lessons.lessons.activeLessons"
             class="active-lessons"
         >
             <template #title>
@@ -45,7 +38,7 @@ onMounted(async () => {
                         tag: 'ul',
                         type: 'transition-group'
                     }"
-                    v-model="lessonsList.activeLessons"
+                    v-model="lessons.lessons.activeLessons"
                     v-bind="dragOptions"
                     @start="drag = true"
                     @end="drag = false"
@@ -82,7 +75,7 @@ onMounted(async () => {
                         tag: 'ul',
                         type: 'transition-group'
                     }"
-                    v-model="lessonsList.notActiveLessons"
+                    v-model="lessons.lessons.notActiveLessons"
                     v-bind="dragOptions"
                     @start="drag = true"
                     @end="drag = false"
@@ -98,7 +91,7 @@ onMounted(async () => {
                             <div class="flex items-center gap-1">
                                 <span
                                     class="icon pi pi-minus"
-                                    @click="lessonsList.notActiveLessons.splice(index, 1)"
+                                    @click="lessons.lessons.notActiveLessons.splice(index, 1)"
                                 />
                                 <span>{{ element }}</span>
                             </div>

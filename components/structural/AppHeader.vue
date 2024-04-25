@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref} from "vue"
+import {ref} from "vue"
 
 import {useAuthStore} from "~/store/auth.js"
 import {useUserStore} from "~/store/user.js"
@@ -7,18 +7,24 @@ import OverlayPanel from "primevue/overlaypanel"
 
 const authStore = useAuthStore()
 const userStore = useUserStore()
+const userInfo = ref()
 const ov = ref()
-
-userStore.updateSession()
-
-const userInfo = computed(() => userStore.userInfo)
 
 const openAuth = (event) => {
     ov.value.toggle(event)
 }
 
 function quit() {
+    userStore.userInfo = {
+        success: false,
+        msg: "Не авторизован"
+    }
     authStore.quit()
+}
+
+function updateUserInfo() {
+    console.log(userStore.userInfo)
+    userInfo.value = userStore.userInfo
 }
 
 </script>
