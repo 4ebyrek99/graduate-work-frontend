@@ -3,6 +3,7 @@ import {defineStore} from "pinia"
 import {useRuntimeConfig} from "#imports"
 import cookies from "js-cookie"
 import {useUserStore} from "~/store/user.js"
+import {navigateTo} from "#app"
 
 export const useAuthStore = defineStore("auth", () => {
     const config = useRuntimeConfig()
@@ -25,6 +26,7 @@ export const useAuthStore = defineStore("auth", () => {
     function quit() {
         authResult.value = null
         cookies.remove("token")
+        navigateTo("/")
     }
 
     return {

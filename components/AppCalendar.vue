@@ -1,14 +1,16 @@
 <script setup>
 import {useScheduleStore} from "~/store/schedule.js"
 import {computed} from "vue"
+import {useUserStore} from "~/store/user.js"
 
 const days = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
 
 const scheduleStore = useScheduleStore()
+const userStore = useUserStore()
 
 const calendar = computed(() => scheduleStore.calendar)
 
-await scheduleStore.genSchedule("A1")
+await scheduleStore.genSchedule(userStore.userInfo.groupName)
 
 </script>
 
@@ -25,44 +27,16 @@ await scheduleStore.genSchedule("A1")
         </div>
         <div
             class="week"
-            v-for="week in calendar?.length"
-            :key="week"
+            v-for="(week, id) in calendar"
+            :key="id"
         >
-
             <div class="dates">
-                <Card
-                    v-for="(date, id) in calendar[week-1]"
-                    :key="id"
+                <MonthDayCard
                     class="date"
-                    :id="date.number"
-                >
-                </Card>
-                <!--                <div-->
-                <!--                    v-for="(date, id) in calendar[week-1]"-->
-                <!--                    :key="date"-->
-                <!--                    class="date"-->
-                <!--                    :id="date.number"-->
-                <!--                >-->
-                <!--                    <div>-->
-                <!--                        <div class="flex flex-col">-->
-                <!--                            <div-->
-                <!--                                class="number"-->
-                <!--                                :class="{-->
-                <!--                                    'holiday': [5, 6].includes(id),-->
-                <!--                                    'today': date.number === new Date().getDate()-->
-                <!--                                }"-->
-                <!--                            >-->
-                <!--                                {{ date.number }}-->
-                <!--                            </div>-->
-                <!--                            <div-->
-                <!--                                class="lesson-list"-->
-                <!--                                v-for="lesson in date.lessons"-->
-                <!--                            >-->
-                <!--                                {{ lesson.lessonName }}-->
-                <!--                            </div>-->
-                <!--                        </div>-->
-                <!--                    </div>-->
-                <!--                </div>-->
+                    v-for="(day, id) in week"
+                    :key="id"
+                    :day="day"
+                />
             </div>
         </div>
     </div>

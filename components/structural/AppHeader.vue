@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from "vue"
+import {ref, watch} from "vue"
 
 import {useAuthStore} from "~/store/auth.js"
 import {useUserStore} from "~/store/user.js"
@@ -22,18 +22,14 @@ function quit() {
     authStore.quit()
 }
 
-function updateUserInfo() {
-    console.log(userStore.userInfo)
-    userInfo.value = userStore.userInfo
-}
-
 </script>
 
 <template>
+
     <div class="wrapper">
         <div class="actions">
             <NuxtLink
-                v-if="userInfo?.success"
+                v-if="userStore.userInfo?.success"
                 to="/control-panel"
             >
                 <Button label="Панель управления" />
@@ -42,7 +38,7 @@ function updateUserInfo() {
         <div class="user-info">
             <div
                 class="flex items-center"
-                v-if="!userInfo?.success"
+                v-if="!userStore.userInfo?.success"
             >
                 <Button
                     label="Войти"
@@ -53,7 +49,7 @@ function updateUserInfo() {
                     ref="ov"
                 >
                     <div class="w-full">
-                        <AuthForm @update-user-info="updateUserInfo" />
+                        <AuthForm />
                     </div>
                 </OverlayPanel>
             </div>
@@ -62,7 +58,7 @@ function updateUserInfo() {
                 class="flex items-center"
                 v-else
             >
-                <span>{{userInfo.firstName}} {{userInfo.lastName}}</span>
+                <span>{{userStore.userInfo.firstName}} {{userStore.userInfo.lastName}}</span>
                 <Button
                     class="ml-4"
                     label="Выйти"

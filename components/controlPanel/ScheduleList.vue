@@ -36,8 +36,8 @@ const props = defineProps(({
                 :id="day.id"
                 :day="day"
                 :group-name="props.userGroup"
-                :lessons="lessons.lessons.activeLessons"
-                :teachers="teachers"
+                :lessons="props.lessons.lessons.activeLessons"
+                :teachers="props.teachers"
             />
         </div>
     </div>
