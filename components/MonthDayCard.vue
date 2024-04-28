@@ -15,7 +15,6 @@ defineProps({
             </div>
         </template>
         <template #content>
-            {{day}}
             <div v-if="day.lessons.length">
                 <ul>
                     <li

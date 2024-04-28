@@ -16,28 +16,35 @@ await scheduleStore.genSchedule(userStore.userInfo.groupName)
 
 <template>
     <div class="calendar">
-        <div class="days">
+        <div v-if="userStore.userInfo.success">
             <div
-                class="day-name"
-                v-for="(day, id) in days"
+                class="days"
+            >
+                <div
+                    class="day-name"
+                    v-for="(day, id) in days"
+                    :key="id"
+                >
+                    {{ day }}
+                </div>
+            </div>
+            <div
+                class="week"
+                v-for="(week, id) in calendar"
                 :key="id"
             >
-                {{ day }}
+                <div class="dates">
+                    <MonthDayCard
+                        class="date"
+                        v-for="(day, id) in week"
+                        :key="id"
+                        :day="day"
+                    />
+                </div>
             </div>
         </div>
-        <div
-            class="week"
-            v-for="(week, id) in calendar"
-            :key="id"
-        >
-            <div class="dates">
-                <MonthDayCard
-                    class="date"
-                    v-for="(day, id) in week"
-                    :key="id"
-                    :day="day"
-                />
-            </div>
+        <div v-else>
+            Авторизуйтесь
         </div>
     </div>
 </template>
