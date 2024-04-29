@@ -162,7 +162,6 @@ function addLesson(lesson) {
                     rounded
                     @click="openPanel"
                 />
-
             </template>
         </Card>
     </div>

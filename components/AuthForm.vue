@@ -9,7 +9,6 @@ import InputGroupAddon from "primevue/inputgroupaddon"
 import { useToast } from "primevue/usetoast"
 const authToast = useToast()
 
-const emit = defineEmits(["updateUserInfo"])
 
 const authStore = useAuthStore()
 
@@ -22,7 +21,6 @@ async function login() {
     await authStore.login(user)
     if (authStore.authResult.success) {
         cookies.set("token", authStore.authResult.token)
-        emit("updateUserInfo")
     } else {
         authToast.add({
             severity: "error",

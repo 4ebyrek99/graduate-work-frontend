@@ -20,7 +20,9 @@ export const useAuthStore = defineStore("auth", () => {
             }
         })
 
-        await userStore.getUserInfo()
+        setTimeout(async () => {
+            await userStore.getUserInfo()
+        }, 200)
     }
 
     function quit() {

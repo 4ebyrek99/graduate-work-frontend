@@ -1,5 +1,5 @@
 <script setup>
-import {ref, watch} from "vue"
+import {ref} from "vue"
 
 import {useAuthStore} from "~/store/auth.js"
 import {useUserStore} from "~/store/user.js"
@@ -7,7 +7,6 @@ import OverlayPanel from "primevue/overlaypanel"
 
 const authStore = useAuthStore()
 const userStore = useUserStore()
-const userInfo = ref()
 const ov = ref()
 
 const openAuth = (event) => {
