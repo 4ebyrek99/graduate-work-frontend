@@ -39,15 +39,16 @@ const day = reactive({
 const selectedLessons = defineModel()
 
 selectedLessons.value = reactive({
-    lessonName: "Не указан",
+    lessonName: "Не указано",
     timeStart: "00:00",
     timeEnd: "00:00",
     zoomId: "-",
     zoomPassword: "-",
     teacher:  {
-        name:  "Не указан",
-        phoneNumber: "Не указан"
-    }
+        name:  "Не указано",
+        phoneNumber: "Не указано"
+    },
+    room: "Не указано"
 })
 
 watch(day, () => {
@@ -143,6 +144,7 @@ function addLesson(lesson) {
                                     />
                                 </div>
                                 <InputText
+                                    v-model="selectedLessons.room"
                                     placeholder="Кабинет"
                                     maxlength="6"
                                 />
