@@ -4,10 +4,13 @@ import {ref} from "vue"
 import {useAuthStore} from "~/store/auth.js"
 import {useUserStore} from "~/store/user.js"
 import OverlayPanel from "primevue/overlaypanel"
+import { useI18n } from "#imports"
 
 const authStore = useAuthStore()
 const userStore = useUserStore()
 const ov = ref()
+
+const { t } = useI18n()
 
 const openAuth = (event) => {
     ov.value.toggle(event)
@@ -40,7 +43,7 @@ function quit() {
                 v-if="!userStore.userInfo?.success"
             >
                 <Button
-                    label="Войти"
+                    :label="t('header.auth.signIn')"
                     type="button"
                     @click="openAuth"
                 />
