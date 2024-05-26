@@ -1,8 +1,17 @@
 <script setup>
 import {ref} from "vue"
 
+import { useI18n } from "#imports"
+import { isToday } from "date-fns"
+
+const { t, tm } = useI18n()
+
 defineProps({
     day: {
+        type: Object,
+        required: true
+    },
+    today: {
         type: Object,
         required: true
     }
@@ -12,12 +21,15 @@ const visible = ref(false)
 </script>
 
 <template>
-    <Card>
+    <Card class="day-card">
         <template #title>
             <div class="flex justify-between">
                 <div
                     class="date-number"
-                    :class="{'holiday': ['sat', 'sun'].includes(day.dayId)}"
+                    :class="{
+                        'holiday': ['sat', 'sun'].includes(day.dayId),
+                        'today': isToday(new Date(today.getFullYear(), day.month, day.number))
+                    }"
                 >
                     {{ day.number }}
                 </div>
@@ -44,38 +56,41 @@ const visible = ref(false)
                 </ul>
             </div>
             <div v-else>
-                <span>Занятий нет</span>
+                <span>{{ t("schedule.noClasses") }}</span>
             </div>
             <Dialog
-                class=""
+                class="md:min-w-[612px]"
                 v-model:visible="visible"
                 modal
-                :header="`Подробная информация: ${day.number} число`"
+                :header="`${day.dayName} - ${day.number} ${tm('schedule.monthNames')[day.month]}`"
             >
                 <div
                     class="dialog-content"
                     v-if="day.lessons.length"
                 >
                     <DataTable :value="day.lessons">
+                        <template #header>
+                            <span>{{ t("schedule.schedule") }}</span>
+                        </template>
                         <Column
                             field="lessonName"
-                            header="Предмет"
+                            :header="t('schedule.tableColumnTitles.classroom')"
                         ></Column>
                         <Column
                             field="timeStart"
-                            header="Начало"
+                            :header="t('schedule.tableColumnTitles.start')"
                         ></Column>
                         <Column
                             field="timeEnd"
-                            header="Конец"
+                            :header="t('schedule.tableColumnTitles.end')"
                         ></Column>
                         <Column
                             field="teacher.name"
-                            header="Преподаватель"
+                            :header="t('schedule.tableColumnTitles.teacher')"
                         ></Column>
                         <Column
                             field="room"
-                            header="Кабинет"
+                            :header="t('schedule.tableColumnTitles.classroom')"
                         ></Column>
                     </DataTable>
                 </div>
@@ -83,7 +98,7 @@ const visible = ref(false)
                     v-else
                     class="flex justify-center items-center"
                 >
-                    <span>Занятий нет</span>
+                    <span>{{ t("schedule.noClasses") }}</span>
                 </div>
             </Dialog>
         </template>
@@ -92,24 +107,44 @@ const visible = ref(false)
 
 <style scoped>
 
-    .date-number {
-        @apply
-        flex
-        justify-center
-        items-center
-        rounded-full
-        border-2
-        w-[40px]
-        h-[40px];
+    .day-card {
+        @apply relative;
 
-        &.holiday {
+        &:after {
             @apply
-            bg-red-600
-            text-white;
+            absolute
+            bottom-0
+            left-0
+            h-[12px]
+            w-full
+            bg-green-700
+            rounded-b-[6px];
+
+            content: "";
+        }
+
+        .date-number {
+            @apply
+            flex
+            justify-center
+            items-center
+            rounded-full
+            border-2
+            w-[40px]
+            h-[40px];
+
+            &.holiday {
+                @apply
+                bg-red-600
+                text-white;
+            }
+
+            &.today {
+                @apply
+                bg-blue-600
+                text-white;
+            }
         }
     }
 
-    .dialog-content {
-
-    }
 </style>

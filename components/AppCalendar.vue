@@ -2,8 +2,11 @@
 import {useScheduleStore} from "~/store/schedule.js"
 import {computed} from "vue"
 import {useUserStore} from "~/store/user.js"
+import { useI18n } from "#imports"
 
-const days = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
+const { tm } = useI18n()
+
+const today = new Date()
 
 const scheduleStore = useScheduleStore()
 const userStore = useUserStore()
@@ -22,7 +25,7 @@ await scheduleStore.genSchedule(userStore.userInfo.groupName)
             >
                 <div
                     class="day-name"
-                    v-for="(day, id) in days"
+                    v-for="(day, id) in tm('schedule.dayNames')"
                     :key="id"
                 >
                     {{ day }}
@@ -39,6 +42,7 @@ await scheduleStore.genSchedule(userStore.userInfo.groupName)
                         v-for="(day, id) in week"
                         :key="id"
                         :day="day"
+                        :today="today"
                     />
                 </div>
             </div>

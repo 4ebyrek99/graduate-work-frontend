@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@mdi/js": "^7.4.47",
+    "date-fns": "^3.6.0",
     "js-cookie": "^3.0.5",
     "nuxt": "^3.10.3",
     "pinia": "^2.1.7",
